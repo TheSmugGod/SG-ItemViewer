@@ -6,9 +6,7 @@ local model
 local previousViewMode = nil
 
 
-
-
-RegisterCommand('show3ditem', function(source, args)
+function startViewingModel(modelname)
     if not isViewing then
         isViewing = true
         previousViewMode = GetFollowPedCamViewMode()
@@ -18,21 +16,22 @@ RegisterCommand('show3ditem', function(source, args)
             type = 'display'
         })
         Citizen.CreateThread(function()
-
-            
 -- Initialize modelCoords with the player's position
 local playerPed = PlayerPedId()
 local playerCoords = GetEntityCoords(playerPed)
 local forwardVector = GetEntityForwardVector(playerPed)
 local x, y, z = table.unpack(playerCoords + forwardVector * 2.0)
 modelCoords = vector3(x, y, z)
-
             while isViewing do
                 Citizen.Wait(0)
-                Draw3DModel(args[1])
+                Draw3DModel(modelname)
             end
         end)
     end
+end
+
+RegisterCommand('show3ditem', function(source, args)
+    startViewingModel(args[1])
 end, false)
 
 
