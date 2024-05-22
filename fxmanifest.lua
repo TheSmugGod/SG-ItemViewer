@@ -10,3 +10,4 @@ files {
 ui_page 'nui/index.html'
 
 client_script 'client.lua'
+export 'startViewingModel'
